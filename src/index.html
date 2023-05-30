@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Image Generator</title>
+</head>
+<body>
+  <h1>Image Generator</h1>
+
+  <form id="inputForm">
+    <label for="name">Name:</label>
+    <input type="text" id="name" required><br>
+
+    <label for="rank">Rank:</label>
+    <input type="text" id="rank"><br>
+
+    <label for="rifle">RiflemanBadge (PTE OR PTE(P)):</label>
+    <input type="text" id="rifle"><br>
+
+    <label for="badge">Badge:</label>
+    <input type="text" id="badge"><br>
+
+    <label for="citations">Citations (comma-separated):</label>
+    <input type="text" id="citations"><br>
+
+    <label for="trainingBadges">Training Badges:</label>
+    <input type="text" id="trainingBadges"><br>
+
+    <label for="uniformColor">Uniform Color:</label>
+    <input type="text" id="uniformColor" required><br>
+
+    <button type="submit">Generate Image</button>
+  </form>
+
+  <div id="imageContainer"></div>
+
+  <script type="text/javascript" src="/index.js"></script>
+  <script>
+    document.getElementById("inputForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      // Gather user input
+      var name = document.getElementById("name").value;
+      var rank = document.getElementById("rank").value;
+      var citations = document.getElementById("citations").value.split(",")
+      var trainingBadges = document.getElementById("trainingBadges").value.split(",")
+      var uniformColor = document.getElementById("uniformColor").value;
+      var rifle = document.getElementById("rifle").value;
+      var badge = document.getElementById("badge").value;
+      // Create data object
+      console.log(trainingBadges)
+      var data = {
+        name: name,
+        rank: rank,
+        citations: citations,
+        TrainingMedals: trainingBadges,
+        Uniform: uniformColor,
+        RifleManBadge : rifle,
+        badge: badge,
+
+      };
+    
+      if(data.citations.length == 1 && data.citations[0] == "")
+      data.citations = [];
+      if(data.TrainingMedals.length == 1 && data.TrainingMedals[0] == "")
+      data.TrainingMedals = [];
+
+      // Call the main function from index.js and display the returned image
+
+      fetch('/update', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+      .then(response => response.blob())
+      .then(imageBlob => {
+        // Create a URL for the image blob
+        var imageUrl = URL.createObjectURL(imageBlob);
+        // Create an <img> element
+        var imgElement = document.createElement("img");
+        console.log(imageUrl)
+
+        // Set the source of the image to the generated image
+        imgElement.src = imageUrl;
+
+        // Append the image element to the "imageContainer" div
+        document.getElementById("imageContainer").appendChild(imgElement);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    });
+  </script>
+</body>
+</html>
