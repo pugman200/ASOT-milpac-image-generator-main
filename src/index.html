@@ -8,7 +8,7 @@
 
   <form id="inputForm">
     <label for="name">Name:</label>
-    <input type="text" id="name" required><br><br>
+    <input type="text" id="name" oninput="this.value = this.value.toUpperCase()" required><br><br>
 
     <label for="rifle">PTE or PTE(P):</label>
     <input type="text" id="rifle" readonly>
@@ -51,6 +51,9 @@
     <input type="checkbox" id="Victor" value="Victor">
     <label for="Victor">Victor</label>
     
+
+    <input type="checkbox" id="Hotel" value="Hotel">
+    <label for="Hotel">Hotel</label>
     <br><br>
     
     <label for="uniformColor">Uniform Color:</label>
@@ -79,7 +82,19 @@
     <label for="Campaign2">Campaign2</label>
     
     <input type="checkbox" id="Campaign3" value="Campaign3">
-    <label for="Campaign3">Campaign3</label><br>
+    <label for="Campaign3">Campaign3</label>
+
+    <input type="checkbox" id="Campaign4" value="Campaign4">
+    <label for="Campaign4">Campaign4</label>
+
+    <input type="checkbox" id="Campaign5" value="Campaign5">
+    <label for="Campaign5">Campaign5</label>
+
+    <input type="checkbox" id="Campaign6" value="Campaign6">
+    <label for="Campaign6">Campaign6</label>
+
+    <input type="checkbox" id="Campaign7" value="Campaign7">
+    <label for="Campaign7">Campaign7</label><br>
 
     <text><underline>Period of Service Citations</underline></text><br>
 
@@ -471,7 +486,6 @@
   }
 </script>
 
-</script>
     
 <br>
 
@@ -486,7 +500,9 @@
       event.preventDefault();
 
       // Gather user input
-      var name = document.getElementById("name").value;
+
+      var nameInput = document.getElementById("name").value;
+      var name = nameInput.toUpperCase();
       var rank = document.getElementById("rank").value;
       var citations = document.getElementById("citations").value.split(",")
       var trainingBadges = document.getElementById("trainingBadges").value.split(",")
