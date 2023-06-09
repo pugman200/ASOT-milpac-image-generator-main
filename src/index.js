@@ -69,8 +69,15 @@ const main = async (data) => {
     //text should be white in colour
     ctx.fillStyle = "#ffffff";
     ctx.textAlign = "center";
-    ctx.fillText(data.name, 471, 512);
-
+    let size = ctx.measureText(data.name).width
+    let counter =0
+    while(size > 120){
+    counter++
+    console.log(20 -counter)
+    ctx.font = `bold ${20-counter}px Times New Roman`;
+    size = ctx.measureText(data.name).width
+    }
+    ctx.fillText(data.name, 475, 512);
     //corp badge
     const corpbadge = await loadImage(
       __dirname + `/../imge/Corps/Corps Badges/${data.badge}.png`
@@ -88,10 +95,13 @@ const main = async (data) => {
         }
       ).catch((err) => console.log(err));
       for (const earnedMedal of data.TrainingMedals) {
+       // if(earnedMedal == "FO" || earnedMedal == "")
         const names = medals.map((medal) => medal.split("\\").pop());
         // console.log(names);
-        if (!names.includes(`${earnedMedal}.png`))
+        if (!names.includes(`${earnedMedal}.png`)){
+          console.log(earnedMedal)
           return console.log("Medal not found");
+        }
         //load the medal with the path from medals array
         const medal = await loadImage(
           medals[names.indexOf(`${earnedMedal}.png`)]
@@ -142,6 +152,7 @@ const main = async (data) => {
       //   console.log(medals);
       //if a line is empty remove it
       medals = medals.filter((x) => x.length != 0);
+      let counter =0
       //console.log(medals);
       for (const [index, row] of medals.entries()) {
         let corner;
@@ -150,7 +161,7 @@ const main = async (data) => {
           corner = leftEndFirstLine2X - (4 - row.length) * 32;
           //if current line has less than 4 medals move the medals from the last element of the next line to the current line untill 4 medals are reached
           if (medals[index + 1]) {
-            console.log(row.length, medals[index + 1]);
+        //    console.log(row.length, medals[index + 1]);
             let count = 1;
             while (row.length < 4) {
               //  console.log(row);
@@ -192,7 +203,9 @@ const main = async (data) => {
           }
         }
         if (index == 5 || index == 6) {
+         // console.log("line 5 and 6" + row.length)
           corner = leftEndFirstLine2X - (2 - row.length) * 32;
+          console.log(corner, row)
           if (medals[index + 1]) {
             let count = 1;
             while (row.length < 2) {
@@ -209,15 +222,16 @@ const main = async (data) => {
               if (count > 6) break;
               row.push(medals[index + count].pop());
             }
-            corner = leftEndFirstLine2X - (3 - row.length) * 32;
+            corner = leftEndFirstLine2X - (2 - row.length) * 32;
           }
         }
         if (index == 7) {
-          corner = left;
+          corner = leftEndFirstLine2X;
         }
         //  console.log(corner);
         for (const [index1, singularMedal] of row.entries()) {
           //    console.log(singularMedal);
+          counter++
           const medal = await loadImage(
             __dirname + `/../imge/Ribbons/${singularMedal}.png`
           );

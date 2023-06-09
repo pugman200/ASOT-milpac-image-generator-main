@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const port = 3000;
+const port = 42069;
 const bodyParser = require("body-parser");
 const jsonParser = bodyParser.json();
 const imageGenerator = require("./index.js");
