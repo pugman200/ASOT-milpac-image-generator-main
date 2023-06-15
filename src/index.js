@@ -13,13 +13,7 @@ const main = async (data) => {
       const image = await loadImage(__dirname + "/../base-brown-uni.png");
       ctx.drawImage(image, 0, 0, 1398, 1000);
 
-      //RifleMan Badge
-      if (data.RifleManBadge) {
-        const RifleManBadge = await loadImage(
-          __dirname + `/../imge/Embellishments/${data.RifleManBadge}.png`
-        );
-        ctx.drawImage(RifleManBadge, 0, 0, 1398, 1000);
-      }
+      
 
       //rank
       if (data.rank) {
@@ -58,7 +52,19 @@ const main = async (data) => {
     }
 
     //UNIVERSAL STUFF
+//RifleMan Badge
 
+      if (data.RifleManBadge) {
+
+        const RifleManBadge = await loadImage(
+
+          __dirname + `/../imge/Embellishments/${data.RifleManBadge}.png`
+
+        );
+
+        ctx.drawImage(RifleManBadge, 0, 0, 1398, 1000);
+
+      }
     //draw ./imge/Embelishments/Name tag.png
     // const image2 = await loadImage(
     // __dirname + "/../imge/Embellishments/Name Tag.png"
