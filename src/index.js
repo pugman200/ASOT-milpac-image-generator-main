@@ -3,8 +3,21 @@ const { createCanvas, loadImage } = canvas;
 const fs = require("fs");
 const { glob } = require("glob");
 const medalJSON = require("../medals.json");
-canvas.registerFont(require("@canvas-fonts/times-new-roman"), { family: "Times New Roman" });
+canvas.registerFont(require("@canvas-fonts/times-new-roman"), {
+  family: "Times New Roman",
+});
+const pptxgen = require("pptxgenjs");
 
+// Load the existing PowerPoint template
+const pptx = new pptxgen();
+pptx.load("../templates/Bulk Template.pptx");
+
+// Modify the template as needed
+pptx.slides[0].addText("New Name", { x: 1, y: 1, font_size: 24 });
+pptx.slides[0].addText("New Signature", { x: 1, y: 2, font_size: 18 });
+
+// Save the modified template as a new PowerPoint file
+pptx.writeFile("new_presentation.pptx");
 const main = async (data) => {
   try {
     const canvas = createCanvas(1398, 1000);
@@ -12,8 +25,6 @@ const main = async (data) => {
     if (data.Uniform == "Brown") {
       const image = await loadImage(__dirname + "/../base-brown-uni.png");
       ctx.drawImage(image, 0, 0, 1398, 1000);
-
-      
 
       //rank
       if (data.rank) {
@@ -52,19 +63,15 @@ const main = async (data) => {
     }
 
     //UNIVERSAL STUFF
-//RifleMan Badge
+    //RifleMan Badge
 
-      if (data.RifleManBadge) {
+    if (data.RifleManBadge) {
+      const RifleManBadge = await loadImage(
+        __dirname + `/../imge/Embellishments/${data.RifleManBadge}.png`
+      );
 
-        const RifleManBadge = await loadImage(
-
-          __dirname + `/../imge/Embellishments/${data.RifleManBadge}.png`
-
-        );
-
-        ctx.drawImage(RifleManBadge, 0, 0, 1398, 1000);
-
-      }
+      ctx.drawImage(RifleManBadge, 0, 0, 1398, 1000);
+    }
     //draw ./imge/Embelishments/Name tag.png
     // const image2 = await loadImage(
     // __dirname + "/../imge/Embellishments/Name Tag.png"
@@ -75,13 +82,13 @@ const main = async (data) => {
     //text should be white in colour
     ctx.fillStyle = "#ffffff";
     ctx.textAlign = "center";
-    let size = ctx.measureText(data.name).width
-    let counter =0
-    while(size > 120){
-    counter++
-    console.log(20 -counter)
-    ctx.font = `bold ${20-counter}px Times New Roman`;
-    size = ctx.measureText(data.name).width
+    let size = ctx.measureText(data.name).width;
+    let counter = 0;
+    while (size > 120) {
+      counter++;
+      console.log(20 - counter);
+      ctx.font = `bold ${20 - counter}px Times New Roman`;
+      size = ctx.measureText(data.name).width;
     }
     ctx.fillText(data.name, 475, 512);
     //corp badge
@@ -101,11 +108,11 @@ const main = async (data) => {
         }
       ).catch((err) => console.log(err));
       for (const earnedMedal of data.TrainingMedals) {
-       // if(earnedMedal == "FO" || earnedMedal == "")
+        // if(earnedMedal == "FO" || earnedMedal == "")
         const names = medals.map((medal) => medal.split("\\").pop());
         // console.log(names);
-        if (!names.includes(`${earnedMedal}.png`)){
-          console.log(earnedMedal)
+        if (!names.includes(`${earnedMedal}.png`)) {
+          console.log(earnedMedal);
           return console.log("Medal not found");
         }
         //load the medal with the path from medals array
@@ -158,7 +165,7 @@ const main = async (data) => {
       //   console.log(medals);
       //if a line is empty remove it
       medals = medals.filter((x) => x.length != 0);
-      let counter =0
+      let counter = 0;
       //console.log(medals);
       for (const [index, row] of medals.entries()) {
         let corner;
@@ -167,7 +174,7 @@ const main = async (data) => {
           corner = leftEndFirstLine2X - (4 - row.length) * 32;
           //if current line has less than 4 medals move the medals from the last element of the next line to the current line untill 4 medals are reached
           if (medals[index + 1]) {
-        //    console.log(row.length, medals[index + 1]);
+            //    console.log(row.length, medals[index + 1]);
             let count = 1;
             while (row.length < 4) {
               //  console.log(row);
@@ -209,9 +216,9 @@ const main = async (data) => {
           }
         }
         if (index == 5 || index == 6) {
-         // console.log("line 5 and 6" + row.length)
+          // console.log("line 5 and 6" + row.length)
           corner = leftEndFirstLine2X - (2 - row.length) * 32;
-          console.log(corner, row)
+          console.log(corner, row);
           if (medals[index + 1]) {
             let count = 1;
             while (row.length < 2) {
@@ -237,7 +244,7 @@ const main = async (data) => {
         //  console.log(corner);
         for (const [index1, singularMedal] of row.entries()) {
           //    console.log(singularMedal);
-          counter++
+          counter++;
           const medal = await loadImage(
             __dirname + `/../imge/Ribbons/${singularMedal}.png`
           );
@@ -261,8 +268,8 @@ const main = async (data) => {
         ctx.drawImage(collar, 0, 0, 1398, 1000);
       }
     }
-    
-// export image as member name
+
+    // export image as member name
     console.log("exporting image");
     const fileName = data.name + ".png"; // Create the file name
     const filePath = __dirname + "/../milpac/" + fileName; // Set the file path
