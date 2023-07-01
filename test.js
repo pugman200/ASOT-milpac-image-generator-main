@@ -20,8 +20,8 @@ const doc = new Docxtemplater(zip, {
 // Render the document (Replace {first_name} by John, {last_name} by Doe, ...)
 doc.render({
   name: "Private Fulcrum",
-  signaturer: "LT COL Thomas",
-  date: "29 JUNE 2023",
+  signaturer: "LTCOL Thomas",
+  date: "29 June 2023",
 });
 
 const buf = doc.getZip().generate({
