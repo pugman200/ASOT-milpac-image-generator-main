@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 const jsonParser = bodyParser.json();
 const imageGenerator = require("./index.js");
 const path = require("path");
+const certGenerator = require("./cert");
 // create application/x-www-form-urlencoded parser
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
 app.get("/", (req, res) => {
@@ -36,7 +37,7 @@ app.post("/update", jsonParser, async (req, res) => {
     .status(200)
     .sendFile(path.resolve(__dirname + `/../milpac/${data.name}.png`));
 });
-app.post("/create-cert", (req, res) => {
+app.post("/create-cert", async (req, res) => {
   let data = req.body;
   console.log(data);
   let errored = false;
@@ -58,6 +59,8 @@ app.post("/create-cert", (req, res) => {
     pte: 14,
     enlist: 15,
   };
+  const slide = SlideNumbers[date.cert];
+  await certGenerator(date);
 });
 app.listen(port, () => {
   console.log(`App listening at http://localhost:${port}`);
