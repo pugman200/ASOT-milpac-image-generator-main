@@ -32,8 +32,8 @@ async function main(data) {
   // file or res.send it with express for example.
   fs.writeFileSync(path.resolve(__dirname, "../output.pptx"), buf);
   const imgData = await converter.powerpointToImages(
-    "../output.pptx",
-    "../certs"
+   __dirname +  "/../output.pptx",
+   __dirname +  "/../certs/"
   );
   for (const img of imgData) {
     console.log(img);
