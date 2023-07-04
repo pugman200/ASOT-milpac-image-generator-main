@@ -65,7 +65,7 @@ app.post("/create-cert", jsonParser, async (req, res) => {
  await new Promise((resolve) => setTimeout(resolve, 10000));  
 res.status(200).sendFile(path.resolve(__dirname + `/../certs/output${slide - 1}.png`))
 console.log(path.resolve(__dirname, "/../certs/"))
- await new Promise((resolve) => setTimeout(resolve, 60000));
+ await new Promise((resolve) => setTimeout(resolve, 5000));
 fs.rmSync(path.resolve(__dirname + "/../certs/"), { recursive: true, force: true });
 
 });
