@@ -21,6 +21,7 @@
     "gm": "^1.25.0",
     "node.js": "^0.0.1-security",
     "nodejs-pptx": "^1.2.4",
+    "pdf-img-convert": "^1.2.1",
     "pizzip": "^3.1.4",
     "ppt-png": "^2.0.0",
     "pptxgenjs": "^3.12.0",

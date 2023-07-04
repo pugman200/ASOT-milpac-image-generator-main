@@ -1,3 +1,4 @@
+const fs = require("fs")
 const express = require("express");
 const app = express();
 const port = 42069;
@@ -37,7 +38,7 @@ app.post("/update", jsonParser, async (req, res) => {
     .status(200)
     .sendFile(path.resolve(__dirname + `/../milpac/${data.name}.png`));
 });
-app.post("/create-cert", async (req, res) => {
+app.post("/create-cert", jsonParser, async (req, res) => {
   let data = req.body;
   console.log(data);
   let errored = false;
@@ -59,8 +60,17 @@ app.post("/create-cert", async (req, res) => {
     pte: 14,
     enlist: 15,
   };
-  const slide = SlideNumbers[date.cert];
-  await certGenerator(date);
+  const slide = SlideNumbers[data.cert];
+  await certGenerator(data);
+ await new Promise((resolve) => setTimeout(resolve, 10000));  
+res.status(200).sendFile(path.resolve(__dirname + `/../certs/output${slide - 1}.png`))
+console.log(path.resolve(__dirname, "/../certs/"))
+ await new Promise((resolve) => setTimeout(resolve, 60000));
+fs.rmSync(path.resolve(__dirname + "/../certs/"), { recursive: true, force: true });
+
+});
+app.get("/certificates", (req, res) => {
+  res.sendFile(path.resolve(__dirname + "/certificate.html"));
 });
 app.listen(port, () => {
   console.log(`App listening at http://localhost:${port}`);
