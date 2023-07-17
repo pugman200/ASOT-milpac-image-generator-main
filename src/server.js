@@ -1,4 +1,4 @@
-const fs = require("fs")
+const fs = require("fs");
 const express = require("express");
 const app = express();
 const port = 42069;
@@ -62,12 +62,20 @@ app.post("/create-cert", jsonParser, async (req, res) => {
   };
   const slide = SlideNumbers[data.cert];
   await certGenerator(data);
- await new Promise((resolve) => setTimeout(resolve, 10000));  
-res.status(200).sendFile(path.resolve(__dirname + `/../certs/output${slide - 1}.png`))
-console.log(path.resolve(__dirname, "/../certs/"))
- await new Promise((resolve) => setTimeout(resolve, 5000));
-fs.rmSync(path.resolve(__dirname + "/../certs/"), { recursive: true, force: true });
-
+  await new Promise((resolve) => setTimeout(resolve, 10000));
+  res
+    .status(200)
+    .sendFile(path.resolve(__dirname + `/../certs/output${slide - 1}.png`));
+  console.log(path.resolve(__dirname, "/../certs/"));
+  await new Promise((resolve) => setTimeout(resolve, 5000));
+  fs.copyFileSync(
+    path.resolve(__dirname + `/../certs/output${slide - 1}.png`),
+    path.resolve(__dirname + `/../certificates/${data.name} - ${data.cert}.png`)
+  );
+  fs.rmSync(path.resolve(__dirname + "/../certs/"), {
+    recursive: true,
+    force: true,
+  });
 });
 app.get("/certificates", (req, res) => {
   res.sendFile(path.resolve(__dirname + "/certificate.html"));
