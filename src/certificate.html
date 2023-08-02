@@ -1,0 +1,81 @@
+//create a HTML page to get 4 inputs which are date, name,signaturer and certType
+//then create a button to generate a certificate
+//a post request is sent to a local server on /create-cert
+//the server will create a certificate and send it back to the client
+//the client webpage will now display the certificate
+//the client can now download the certificate
+//the client can now print the certificate
+<!DOCTYPE html<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Certificate Generator</title>
+    <style>
+        .container{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .input{
+            margin: 10px;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Certificate Generator</h1>
+        <div class="input">
+            <label for="date">Date</label>
+            <input type="date" name="date" id="date">
+        </div>
+        <div class="input">
+            <label for="name">Name</label>
+            <input type="text" name="name" id="name">
+        </div>
+        <div class="input">
+            <label for="signaturer">Signaturer</label>
+            <input type="text" name="signaturer" id="signaturer">
+        </div>
+        <div class="input">
+            <label for="certType">Certificate Type, Available certificates reenlist,ltcol,major,captain,lieutenant,wing-commander,squadron-leader,flt,wo1,wo2,sgt,cpl,lcpl,pte,enlist</label>
+            <input type="text" name="certType" id="certType">
+        </div>
+        <button id="generate">Generate Certificate</button>
+        <div id="certificate"></div>
+    </div>
+    <script>
+        const generateButton = document.querySelector('#generate');
+        const certificateDiv = document.querySelector('#certificate');
+        const dateInput = document.querySelector('#date');
+        const nameInput = document.querySelector('#name');
+        const signaturerInput = document.querySelector('#signaturer');
+        const certTypeInput = document.querySelector('#certType');
+
+        generateButton.addEventListener('click', () => {
+            const date = dateInput.value;
+            const name = nameInput.value;
+            const signaturer = signaturerInput.value;
+            const certType = certTypeInput.value;
+            fetch('/create-cert', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    date: date,
+                    name: name,
+                    signaturer: signaturer,
+                    cert: certType
+                })
+            })
+            .then(response => response.text())
+            .then(certificate => {
+                certificateDiv.innerHTML = certificate;
+            })
+        })
+    </script>
+</body>
+</html>
+
+//<!--

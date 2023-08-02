@@ -11,6 +11,9 @@ const urlencodedParser = bodyParser.urlencoded({ extended: false });
 app.get("/", (req, res) => {
   res.sendFile(path.resolve(__dirname + "/index.html"));
 });
+app.get("/certificates", (req, res) => {
+  res.sendFile(path.resolve(__dirname + "/certificate.html"));
+});
 app.post("/update", jsonParser, async (req, res) => {
   let data = req.body;
   console.log(data);

@@ -6,18 +6,6 @@ const medalJSON = require("../medals.json");
 canvas.registerFont(require("@canvas-fonts/times-new-roman"), {
   family: "Times New Roman",
 });
-const pptxgen = require("pptxgenjs");
-
-// Load the existing PowerPoint template
-const pptx = new pptxgen();
-pptx.load("../templates/Bulk Template.pptx");
-
-// Modify the template as needed
-pptx.slides[0].addText("New Name", { x: 1, y: 1, font_size: 24 });
-pptx.slides[0].addText("New Signature", { x: 1, y: 2, font_size: 18 });
-
-// Save the modified template as a new PowerPoint file
-pptx.writeFile("new_presentation.pptx");
 const main = async (data) => {
   try {
     const canvas = createCanvas(1398, 1000);
