@@ -42,8 +42,8 @@ const main = async (data) => {
     //left  - 85,98
     //right - 795, 99
     //one medal is 70x153
-    const left = 85;
-    const right = 794;
+    const left = 84;
+    const right = 795;
     const top = 102;
     const length = right - left;
     const medalLength = foundMedals.length * 34;
