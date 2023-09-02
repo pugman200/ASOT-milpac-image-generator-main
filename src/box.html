@@ -2,19 +2,68 @@
 <html>
   <head>
     <title>Medal Box</title>
+    <select id="dropdown" multiple="true"></select>
+    <div id="imageContainer"></div>
     <script>
-      var fs = require("fs");
-      var files = fs.readdirSync("../medal-box-images/medals");
-      var select = document.getElementById("selectNumber");
-      for (var i = 0; i < files.length; i++) {
-        var opt = files[i];
-        var el = document.createElement("option");
-        el.textContent = opt;
-        el.value = opt;
-        select.appendChild(el);
-      }
-    </script>
+      fetch("/get-medals", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          files = data.files;
 
-    <select id="selectNumber"></select>
+          var dropdown = document.getElementById("dropdown");
+          //   var files = ["file1.txt", "file2.txt", "file3.txt"];
+
+          for (var i = 0; i < files.length; i++) {
+            var option = document.createElement("option");
+            option.value = files[i];
+            option.textContent = files[i];
+            dropdown.appendChild(option);
+          }
+          var button = document.getElementById("gen");
+          button
+            .addEventListener("click", () => {
+              const selected = document.querySelectorAll(
+                "#dropdown option:checked"
+              );
+              const values = Array.from(selected).map((el) => el.value);
+              console.log(values);
+              fetch("/generate-box", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  medals: values.map((x) => x.split(".")[0]),
+                }),
+              })
+                .then((response) => response.blob())
+                .then((imageBlob) => {
+                  // Create a URL for the image blob
+                  var imageUrl = URL.createObjectURL(imageBlob);
+                  // Create an <img> element
+                  var imgElement = document.createElement("img");
+                  console.log(imageUrl);
+
+                  // Set the source of the image to the generated image
+                  imgElement.src = imageUrl;
+
+                  // Append the image element to the "imageContainer" div
+                  document
+                    .getElementById("imageContainer")
+                    .appendChild(imgElement);
+                });
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+            });
+        });
+    </script>
+    <button id="gen">Generate</button>
   </head>
 </html>

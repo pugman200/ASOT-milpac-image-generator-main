@@ -29,6 +29,7 @@ const main = async (data) => {
       340
     );
     const medals = data.medals;
+    console.log(medals);
     //arrange the elements of the arrays labelled eight_line, sixth_line and so on from the medals.json file
     //they should be arranged so the eight line if the first element of the conjoined array
     //the ninth line should be the second element of the conjoined array
@@ -38,7 +39,7 @@ const main = async (data) => {
     const foundMedals = conjoined
       .filter((medal) => medals.includes(medal))
       .reverse();
-    console.log(foundMedals);
+    console.log("found" + foundMedals);
     //left  - 85,98
     //right - 795, 99
     //one medal is 70x153
@@ -82,14 +83,16 @@ const main = async (data) => {
   } catch (err) {
     console.log(err);
   }
+  return __dirname + "/../medal-box-images/box.png";
 };
+/*
 main({
   medals: [
     "Group Development",
     "Public Relation",
     "Senior Leadership",
     "Junior Leadership",
-    "1 Year",
+    "1 year",
     "2 Year",
     "3 Year",
     "4 Year",
@@ -100,3 +103,5 @@ main({
     "Cross Of Valour",
   ],
 });
+*/
+module.exports = main;

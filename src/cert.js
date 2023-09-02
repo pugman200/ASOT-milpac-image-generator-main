@@ -40,4 +40,4 @@ async function main(data) {
   }
 }
 module.exports = main;
-main({ name: "Private Fulcrum", signaturer: "MAJ Trew", date: "3 July 2023" });
+//main({ name: "Private Fulcrum", signaturer: "MAJ Trew", date: "3 July 2023" });

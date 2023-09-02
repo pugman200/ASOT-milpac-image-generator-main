@@ -6,6 +6,8 @@ const jsonParser = bodyParser.json();
 const imageGenerator = require("./index.js");
 const path = require("path");
 const certGenerator = require("./cert");
+const fs = require("fs");
+const generate_box = require("./box.js");
 // create application/x-www-form-urlencoded parser
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
 app.get("/", (req, res) => {
@@ -64,6 +66,24 @@ app.post("/create-cert", async (req, res) => {
   };
   const slide = SlideNumbers[date.cert];
   await certGenerator(date);
+});
+app.get("/get-medals", (req, res) => {
+  res.send({
+    files: fs.readdirSync(__dirname + "/../medal-box-images/medals"),
+  });
+});
+app.get("/box", (req, res) => {
+  res.sendFile(path.resolve(__dirname + "/box.html"));
+});
+app.post("/generate-box", jsonParser, async (req, res) => {
+  let data = req.body;
+  console.log(data);
+  let errored = false;
+  if (!data) return res.sendStatus(400);
+  await generate_box(data);
+  res
+    .status(200)
+    .sendFile(path.resolve(__dirname + `/../medal-box-images/box.png`));
 });
 app.listen(port, () => {
   console.log(`App listening at http://localhost:${port}`);
