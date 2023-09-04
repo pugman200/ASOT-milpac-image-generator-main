@@ -3,6 +3,8 @@
   <head>
     <title>Medal Box</title>
     <select id="dropdown" multiple="true"></select>
+
+    <input type="text" id="name" placeholder="Enter text here" />
     <div id="imageContainer"></div>
     <script>
       fetch("/get-medals", {
@@ -40,6 +42,7 @@
                 },
                 body: JSON.stringify({
                   medals: values.map((x) => x.split(".")[0]),
+                  name: document.getElementById("name").value,
                 }),
               })
                 .then((response) => response.blob())

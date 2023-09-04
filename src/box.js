@@ -79,11 +79,14 @@ const main = async (data) => {
       340
     );
     const buffer = canvas.toBuffer("image/png");
-    fs.writeFileSync(__dirname + "/../medal-box-images/box.png", buffer);
+    fs.writeFileSync(
+      __dirname + `/../medal-box-images/boxes/${data.name}.png`,
+      buffer
+    );
   } catch (err) {
     console.log(err);
   }
-  return __dirname + "/../medal-box-images/box.png";
+  return __dirname + `/../medal-box-images/boxes/${data.name}.png`;
 };
 /*
 main({

@@ -83,7 +83,9 @@ app.post("/generate-box", jsonParser, async (req, res) => {
   await generate_box(data);
   res
     .status(200)
-    .sendFile(path.resolve(__dirname + `/../medal-box-images/box.png`));
+    .sendFile(
+      path.resolve(__dirname + `/../medal-box-images/boxes/${data.name}.png`)
+    );
 });
 app.listen(port, () => {
   console.log(`App listening at http://localhost:${port}`);
